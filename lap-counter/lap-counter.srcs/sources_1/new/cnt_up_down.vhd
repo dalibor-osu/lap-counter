@@ -26,13 +26,14 @@ library ieee;
 
 entity cnt_up_down is
   generic (
-    g_CNT_WIDTH : natural := 4 --! Default number of counter bits
+    g_CNT_WIDTH : natural := 8 --! Default number of counter bits
   );
   port (
     clk    : in    std_logic; --! Main clock
     rst    : in    std_logic; --! Synchronous reset
     en     : in    std_logic; --! Enable input
     cnt_up : in    std_logic; --! Direction of the counter (1 @ UP, 0 @ DOWN)
+    init   : in    std_logic_vector (g_CNT_WIDTH - 1 downto 0); -- Initial value
     cnt    : out   std_logic_vector(g_CNT_WIDTH - 1 downto 0) --! Counter value
   );
 end entity cnt_up_down;
@@ -57,7 +58,7 @@ begin
 
     if rising_edge(clk) then
       if (rst = '1') then           -- Synchronous reset
-        sig_cnt <= (others => '0'); -- Clear all bits
+        sig_cnt <= unsigned(init);  -- Clear all bits
       elsif (en = '1') then         -- Test if counter is enabled
         if (cnt_up = '1') then
             sig_cnt <= sig_cnt + 1;          
