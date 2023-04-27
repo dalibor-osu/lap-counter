@@ -129,11 +129,10 @@ data_hold: entity work.data_hold
         state => sig_state,
         changed => sig_changed_rst
      );
-    
-display_driver : entity work.driver_7seg_8digits
+
+driver_lap_break : entity work.driver_7seg_lap_break
     port map (
         clk => CLK100MHZ,
-        cnt => sig_t_cnt,
         state => sig_state,
         lap => sig_lap,
         
@@ -145,7 +144,23 @@ display_driver : entity work.driver_7seg_8digits
         seg(1) => CF,
         seg(0) => CG,
         
-        dig(7 downto 0) => AN(7 downto 0)
+        dig(3 downto 0) => AN(7 downto 4)
+    );
+    
+driver_digits : entity work.driver_7seg_4digits
+    port map (
+        clk => CLK100MHZ,
+        cnt => sig_t_cnt,
+        
+        seg(6) => CA,
+        seg(5) => CB,
+        seg(4) => CC,
+        seg(3) => CD,
+        seg(2) => CE,
+        seg(1) => CF,
+        seg(0) => CG,
+        
+        dig(3 downto 0) => AN(3 downto 0)
     );
 
 end Behavioral;
